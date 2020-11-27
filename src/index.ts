@@ -1,34 +1,22 @@
 import generateEnv from "./config/config";
-import express, { json } from "express";
-import cors from "cors";
-import helmet from "helmet";
-import compression from "compression";
 import { http_status, Sockets_enum } from "./utility/interface";
+import oServe_socket from "./class/socket/socket";
+import { Socket } from "socket.io";
 
 const PORT = generateEnv().PORT;
-const app = express();
-const cors_option = { origin: "*" };
+const app = oServe_socket.create_app();
 
-//Set to app
-app.set("trust proxy", 1);
+//Create HTTP Server
+const server = oServe_socket.create_server(app);
+// Initialise Socket
+const io = oServe_socket.socket_initialise(server);
 
-//Std Middelwares
-app.use(json());
-app.use(cors(cors_option));
-app.use(helmet());
-app.use(compression());
-app.options("*", cors());
-
-// Server Listener
-const server = app.listen(PORT, () => {
-  console.log(`${http_status.ListeningonPort}: ${PORT}`);
+io.on(Sockets_enum.connection, (_socket: Socket) => {
+  console.log(`${Sockets_enum.Socket_Connected}`);
 });
 
-//Socket Connection
-const io = require("socket.io")(server);
-
-io.on(Sockets_enum.connection, () => {
-  console.log(`${http_status.Socket_Connected}`);
+server.listen(PORT, () => {
+  console.log(`${http_status.ListeningonPort}: ${PORT}`);
 });
 
 //Server graceful exit

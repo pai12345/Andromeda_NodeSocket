@@ -1,5 +1,4 @@
 class Helper {
-  constructor() {}
   ResultObj(status: number, message: string, data: any) {
     const result = {
       status: status,
