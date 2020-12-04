@@ -4,23 +4,20 @@ import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import oServe_helper from "../helper/helper";
-import http from "http";
-import { http_status, Sockets_enum } from "../../utility/interface";
-import router from "../../routes/route";
+import {
+  http_status,
+  Sockets_enum,
+  generic_status,
+} from "../../utility/interface";
+import route_middleware from "../../middleware/route";
+import generateEnv from "../../config/config";
+// import router from "../../routes/route";
 class Socket {
   private io: any;
   constructor() {
     this.io;
   }
-  create_server(app: Express) {
-    try {
-      const server = http.createServer(app);
-      return server;
-    } catch (error) {
-      return error;
-    }
-  }
-  create_app() {
+  configure_app() {
     try {
       const app = express();
       const cors_option = { origin: "*" };
@@ -33,17 +30,36 @@ class Socket {
       app.use(cors(cors_option));
       app.use(helmet());
       app.use(compression());
-      app.options("*", cors());
-      app.use("/", router);
+      app.use(route_middleware);
+      // app.use("/", router);
 
       return app;
     } catch (error) {
       return error;
     }
   }
-  socket_initialise(server: Server) {
+  create_express_server(app: Express) {
     try {
-      this.io = require("socket.io")(server);
+      const PORT = generateEnv().PORT;
+      const server = app
+        .listen(PORT, () => {
+          console.log(`${http_status.ListeningonPort}: ${PORT}`);
+        })
+        .on(generic_status.Error, (err) => {
+          console.log(`${generic_status.ErrorAppStartup}: ${err}`);
+        });
+      return server;
+    } catch (error) {
+      return error;
+    }
+  }
+  socket_server(server: Server) {
+    try {
+      this.io = require("socket.io")(server, {
+        cors: {
+          origin: "*",
+        },
+      });
       return this.io;
     } catch (error) {
       return error;
