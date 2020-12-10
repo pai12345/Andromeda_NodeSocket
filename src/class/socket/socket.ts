@@ -11,7 +11,6 @@ import {
 } from "../../utility/interface";
 import route_middleware from "../../middleware/route";
 import generateEnv from "../../config/config";
-// import router from "../../routes/route";
 class Socket {
   private io: any;
   constructor() {

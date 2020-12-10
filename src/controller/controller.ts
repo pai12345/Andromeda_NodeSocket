@@ -59,6 +59,11 @@ const Emergency = (io: Server) => {
   }
 };
 
+/**
+ * Function - Controller
+ * @description
+ * Function to generate controller functions.
+ */
 const generateController = () => {
   return {
     CustomerCare: CustomerCare,
