@@ -1,6 +1,6 @@
 import { http_status } from "./utility/interface";
 import oServe_socket from "./class/socket/socket";
-import generateController from "./controller/controller";
+import initialiseSocket from "./routes/route";
 
 //Generate express app configurations
 const app = oServe_socket.configure_app();
@@ -11,10 +11,8 @@ const server = oServe_socket.create_express_server(app);
 //Create SocketIO Server
 const io = oServe_socket.socket_server(server);
 
-//Initialize CustomerCare Namespace
-generateController().CustomerCare(io);
-//Initialize Emergency Namespace
-generateController().Emergency(io);
+//Initialise Socket
+initialiseSocket(io);
 
 //Server graceful exit
 process.on("SIGTERM", () => {

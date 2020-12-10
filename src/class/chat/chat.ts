@@ -1,9 +1,15 @@
-import oServe_socket from "../socket/socket";
-
 class Chat {
-  getmessage() {
-    const io = oServe_socket.getIO();
-    io.emit("posts", { action: "create", post: "post" });
+  disconnect_socket(data: any) {
+    console.log("user has been disconnected", data);
+    return "user has been disconnected";
+  }
+  userjoined_socket(data: any) {
+    console.log("user has joined the chat", data);
+    return "user has joined the chat";
+  }
+  chatmessage_socket(data_message: any) {
+    console.log("Message:", data_message);
+    return `Message:${data_message}`;
   }
 }
 

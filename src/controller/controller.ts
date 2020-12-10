@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { Sockets_enum } from "../utility/interface";
+import oServe_Chat from "../class/chat/chat";
 
 /**
  * Namespace - Customer Care
@@ -9,21 +10,16 @@ import { Sockets_enum } from "../utility/interface";
 const CustomerCare = (io: Server) => {
   try {
     const CustomerCare_io = io.of("/CustomerCare");
-    console.log(io);
 
     CustomerCare_io.on(Sockets_enum.connection, (socket: Socket) => {
-      console.log(`${Sockets_enum.Socket_Connected}`);
+      //User Joined
+      socket.emit("userjoined", oServe_Chat.userjoined_socket);
 
-      socket.emit("userjoined", "user has joined the chat");
-
-      socket.on("chatmessage", (data_message) => {
-        console.log("Message:", data_message);
-      });
+      //Listen to Message
+      socket.on("chatmessage", oServe_Chat.chatmessage_socket);
 
       //Close Socket
-      socket.on("disconnect", (data) => {
-        console.log("user has been disconnected:", data);
-      });
+      socket.on("disconnect", oServe_Chat.disconnect_socket);
     });
   } catch (error) {
     throw new Error(error);
