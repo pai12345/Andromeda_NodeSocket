@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
-import { Sockets_enum } from "../utility/interface";
-import oServe_Chat from "../class/chat/chat";
+import { Sockets_enum } from "../../utility/interface";
+import oServe_Chat from "../../class/chat/chat";
 
 /**
  * Namespace - Customer Care

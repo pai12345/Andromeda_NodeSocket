@@ -1,6 +1,6 @@
 import { http_status } from "./utility/interface";
 import oServe_socket from "./class/socket/socket";
-import initialiseSocket from "./routes/route";
+import initialiseSocket from "./service/initialiser/initialiser";
 
 //Generate express app configurations
 const app = oServe_socket.configure_app();
