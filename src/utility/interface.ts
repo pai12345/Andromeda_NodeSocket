@@ -17,6 +17,8 @@ export enum Sockets_enum {
 export enum generic_status {
   Error = "error",
   ErrorAppStartup = "Error Encountered on app start",
+  DataNotAvailable = "DataNotAvailable",
+  Empty = "Empty",
 }
 
 /**

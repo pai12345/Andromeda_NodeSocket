@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { Sockets_enum } from "../../utility/interface";
 import oServe_Chat from "../../class/chat/chat";
+import oServe_helper from "../../class/helper/helper";
 
 /**
  * Namespace - Customer Care
@@ -9,17 +10,23 @@ import oServe_Chat from "../../class/chat/chat";
  */
 const CustomerCare = (io: Server) => {
   try {
+    //Create Namespace
     const CustomerCare_io = io.of("/CustomerCare");
 
+    //Initialse Socket for Namespace
     CustomerCare_io.on(Sockets_enum.connection, (socket: Socket) => {
-      //User Joined
-      socket.emit("userjoined", oServe_Chat.userjoined_socket);
-
-      //Listen to Message
-      socket.on("chatmessage", oServe_Chat.chatmessage_socket);
+      //Join user to room
+      // socket.on("JoinRoom", oServe_Chat.UserjoinedRoom_socket);
+      socket.on("JoinRoom", (_joinroom_req, callback) => {
+        const generateRoom_id = oServe_helper.Encrypt_data(
+          oServe_helper.Generate_RandomString()
+        );
+        socket.join(generateRoom_id);
+        callback(generateRoom_id);
+      });
 
       //Close Socket
-      socket.on("disconnect", oServe_Chat.disconnect_socket);
+      socket.on("disconnect", oServe_Chat.Disconnect_socket);
     });
   } catch (error) {
     throw new Error(error);
